@@ -1,0 +1,16 @@
+<h2>Clientes</h2>
+  <button (click)="reload()">Recargar</button>
+  @if(clients.length) {
+    <table>
+        <thead><tr><th>Nombre</th><th>Teléfono</th><th>Dirección</th></tr></thead>
+            <tbody>
+                <tr *ngFor="let c of clients">
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.phone || '-' }}</td>
+                    <td>{{ c.address || '-' }}</td>
+                </tr>
+            </tbody>
+    </table>
+  }@else {empty}
+  
+  <ng-template #empty><p>No hay clientes todavía.</p></ng-template>
