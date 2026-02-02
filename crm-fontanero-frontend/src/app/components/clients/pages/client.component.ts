@@ -15,7 +15,6 @@ import { AuthService } from '../../auth/services/auth.service';
 })
 export class ClientComponent implements OnInit {
   private clientService = inject(ClientService);
-  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -45,10 +44,5 @@ export class ClientComponent implements OnInit {
 
   goStock() {
     this.router.navigate(['/stock']);
-  }
-
-  logOut() {
-    this.authService.logout().pipe().subscribe();
-    this.router.navigate(['/login']);
   }
 }

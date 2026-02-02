@@ -1,0 +1,233 @@
+/* ===== Layout base (claro) ===== */
+:host {
+  display: block;
+  min-height: 100dvh;
+  color-scheme: light dark;
+}
+
+.login-shell {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 2vw, 32px);
+  overflow: hidden;
+  background: linear-gradient(180deg, #f7fbff 0%, #f3f7fd 100%);
+}
+
+/* ===== Patrón de puntos sutil ===== */
+.bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(25, 118, 210, 0.08) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+  /* atenúa el patrón hacia los bordes superiores */
+  mask-image: radial-gradient(65% 65% at 50% 40%, #000 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== Blobs (manchas suaves) ===== */
+.bg-blob {
+  position: absolute;
+  width: 46vw;
+  max-width: 640px;
+  aspect-ratio: 1/1;
+  filter: blur(40px);
+  opacity: 0.45;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate3d(0, 0, 0);
+}
+
+.blob-1 {
+  top: -10%;
+  left: -10%;
+  background:
+    radial-gradient(circle at 30% 30%, #bbdefb, transparent 60%),
+    radial-gradient(circle at 70% 70%, #e3f2fd, transparent 60%);
+}
+
+.blob-2 {
+  bottom: -12%;
+  right: -12%;
+  background:
+    radial-gradient(circle at 60% 40%, #c8e6ff, transparent 60%),
+    radial-gradient(circle at 20% 80%, #eaf4ff, transparent 60%);
+}
+
+/* ===== Card principal ===== */
+.login-card {
+  width: min(92vw, 440px);
+  padding: 28px 24px 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(25, 118, 210, 0.12);
+  backdrop-filter: blur(2px);
+  background: #ffffff;
+  box-shadow:
+    0 24px 60px rgba(33, 150, 243, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  z-index: 1; /* por encima de blobs y patrón */
+}
+
+/* ===== Cabecera / Marca ===== */
+.brand {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.brand .logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+.brand h1 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+}
+
+.brand .subtitle {
+  margin: 4px 0 0 0;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 0.95rem;
+}
+
+/* ===== Formulario ===== */
+.form {
+  display: grid;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.row-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.link {
+  text-decoration: none;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+/* Botón enviar */
+.login-btn {
+  height: 46px;
+  border-radius: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Spinner blanco cuando está dentro del botón primary */
+.login-btn mat-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #fff;
+}
+
+/* Error global */
+.error {
+  color: #d32f2f;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ===== Onda inferior ===== */
+.wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 140px;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+.wave svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Pie legal ===== */
+.legal {
+  position: absolute;
+  bottom: clamp(8px, 2vh, 20px);
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 0.85rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  user-select: none;
+  z-index: 1;
+}
+
+/* ===== Tema oscuro (automático) ===== */
+@media (prefers-color-scheme: dark) {
+  .login-shell {
+    background: radial-gradient(1200px circle at 10% 10%, #0b1a2b 0, #0a1424 55%, #070f1c 100%);
+  }
+  .bg-dots {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1.5px);
+  }
+  .blob-1 {
+    background:
+      radial-gradient(circle at 30% 30%, #103a5a, transparent 60%),
+      radial-gradient(circle at 70% 70%, #0d2741, transparent 60%);
+  }
+  .blob-2 {
+    background:
+      radial-gradient(circle at 60% 40%, #154a74, transparent 60%),
+      radial-gradient(circle at 20% 80%, #0f3556, transparent 60%);
+  }
+  .login-card {
+    background: #121212;
+    color: #e2e2e2;
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.03) inset;
+  }
+  .brand .subtitle {
+    color: rgba(226, 232, 240, 0.72);
+  }
+  .legal {
+    color: rgba(226, 232, 240, 0.6);
+  }
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 22px 16px 16px;
+  }
+  .row-between {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .row-between {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

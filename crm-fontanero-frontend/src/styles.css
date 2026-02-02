@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+html {
+  font-size: 16px;
+} /* 15–16px va bien en desktop */
+body {
+  color: var(--text, #0f172a);
+}
+/* Ajuste base para Material Symbols */
+.material-symbols-rounded,
+.mat-icon {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}

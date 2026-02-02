@@ -1,0 +1,161 @@
+<mat-sidenav-container class="shell">
+  <!-- SIDEBAR -->
+  <mat-sidenav
+    #sidenav
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="!isHandset()"
+    class="sidebar"
+  >
+    <div class="brand">
+      <div class="logo">
+        <mat-icon>construction</mat-icon>
+      </div>
+      <div class="brand-text">
+        <h3>CRM Fontanero</h3>
+        <span class="muted">Panel</span>
+      </div>
+    </div>
+
+    <mat-nav-list class="nav">
+      <a mat-list-item routerLink="/dashboard" class="active">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span matListItemTitle>Menú</span>
+      </a>
+
+      <a mat-list-item routerLink="/clients">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Clientes</span>
+      </a>
+
+      <a mat-list-item routerLink="/stock">
+        <mat-icon matListItemIcon>inventory_2</mat-icon>
+        <span matListItemTitle>Stock</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="sidebar-bottom">
+      <button mat-button color="warn" (click)="logOut()" class="logout">
+        <mat-icon>power_settings_new</mat-icon>
+        Logout
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <!-- CONTENT -->
+  <mat-sidenav-content class="content">
+    <!-- TOOLBAR -->
+    <mat-toolbar color="transparent" class="toolbar">
+      <button
+        mat-icon-button
+        (click)="sidenav.toggle()"
+        class="only-handset"
+        aria-label="Abrir menú"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="title">Bienvenido, Alfonso</span>
+      <span class="spacer"></span>
+
+      <button mat-icon-button matTooltip="Buscar">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <button mat-icon-button matBadge="3" matBadgeColor="primary" matTooltip="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        (click)="toggleTheme()"
+        [matTooltip]="theme() === 'light' ? 'Modo oscuro' : 'Modo claro'"
+      >
+        <mat-icon>{{ theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+      </button>
+
+      <button mat-icon-button matTooltip="Perfil">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="container">
+      <section class="intro">
+        <p class="subtitle">Aquí puedes gestionar tus clientes y el stock.</p>
+      </section>
+
+      <!-- KPI CARDS -->
+      <section class="kpi-grid">
+        <!-- KPI: Clientes -->
+        <mat-card class="kpi-card">
+          <!-- icono decorativo fijo -->
+          <div class="kpi-deco">
+            <mat-icon class="material-symbols-rounded">face</mat-icon>
+          </div>
+
+          <div class="kpi-head">
+            <h4>Clientes</h4>
+          </div>
+
+          <div class="kpi-value">{{ totalClients() }}</div>
+
+          <div class="kpi-actions">
+            <button mat-stroked-button color="primary" (click)="go('/clients/new')">
+              <mat-icon class="material-symbols-rounded">person_add</mat-icon>
+              Crear cliente
+            </button>
+          </div>
+        </mat-card>
+
+        <!-- KPI: Stock -->
+        <mat-card class="kpi-card">
+          <div class="kpi-deco">
+            <mat-icon class="material-symbols-rounded">inventory_2</mat-icon>
+          </div>
+
+          <div class="kpi-head">
+            <h4>Stock</h4>
+          </div>
+
+          <div class="kpi-value">{{ totalStock() }}</div>
+
+          <div class="kpi-actions">
+            <button mat-stroked-button color="primary" (click)="go('/stock/new')">
+              <mat-icon class="material-symbols-rounded">add_box</mat-icon>
+              Añadir producto
+            </button>
+          </div>
+        </mat-card>
+      </section>
+
+      <!-- TABLE: Últimos clientes -->
+      <section class="table-section">
+        <h3>Últimos clientes</h3>
+
+        <table mat-table [dataSource]="latestClients" class="mat-elevation-z1 full-width">
+          <!-- Nombre -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+
+          <!-- Teléfono -->
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+            <td mat-cell *matCellDef="let row">{{ row.phone }}</td>
+          </ng-container>
+
+          <!-- Dirección -->
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef>Dirección</th>
+            <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </section>
+
+      <div class="pad-bottom"></div>
+    </div>
+    <!-- INTRO -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

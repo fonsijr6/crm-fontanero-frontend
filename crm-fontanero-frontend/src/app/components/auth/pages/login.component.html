@@ -1,8 +1,131 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
-    <input type="email" placeholder="Email" formControlName="email" />
-    <input type="password" placeholder="Contraseña" formControlName="password" />
-    <button type="submit" [disabled]="form.invalid || loading">Entrar</button>
-    @if(error) {
-      <p class="error">{{ error }}</p>
-    }
-</form>
+<div class="login-shell">
+  <!-- Patrón de puntos sutil -->
+  <div class="bg-dots" aria-hidden="true"></div>
+
+  <!-- Blobs difuminados -->
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
+
+  <!-- Tarjeta de login -->
+  <mat-card class="login-card" appearance="outlined">
+    <div class="brand">
+      <!-- Si tienes logo: <img src="assets/logo.svg" alt="CRM Fontanero" class="logo" /> -->
+      <h1>CRM Fontanero</h1>
+      <p class="subtitle">Acceso seguro</p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="form"
+      autocomplete="on"
+      role="form"
+      novalidate
+    >
+      <!-- Email -->
+      <mat-form-field appearance="fill">
+        <mat-label>Correo electrónico</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="tucorreo@dominio.com"
+          autocomplete="email"
+          required
+          aria-required="true"
+        />
+        <mat-icon matSuffix>mail</mat-icon>
+        @if (form.get('email')?.hasError('required')) {
+          <mat-error> El correo es obligatorio </mat-error>
+        }
+        @if (form.get('email')?.hasError('email')) {
+          <mat-error> Introduce un correo válido </mat-error>
+        }
+      </mat-form-field>
+      <!-- Password -->
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          [type]="passwordVisible ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+          aria-required="true"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="passwordVisible = !passwordVisible"
+          [attr.aria-label]="passwordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          [attr.aria-pressed]="passwordVisible"
+        >
+          <mat-icon>{{ passwordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('required')) {
+          <mat-error> La contraseña es obligatoria </mat-error>
+        }
+        @if (form.get('password')?.hasError('minlength')) {
+          <mat-error> Mínimo 6 caracteres </mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Recuérdame + Recuperar -->
+      <div class="row-between">
+        <mat-checkbox formControlName="remember">Recuérdame</mat-checkbox>
+        <a class="link" routerLink="/auth/forgot-password">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <!-- Botón enviar -->
+      <button
+        class="login-btn"
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid || loading"
+      >
+        @if (!loading) {
+          <ng-container>Iniciar sesión</ng-container>
+        } @else {
+          <mat-progress-spinner
+            mode="indeterminate"
+            diameter="18"
+            strokeWidth="3"
+          ></mat-progress-spinner>
+          <span>Cargando…</span>
+        }
+      </button>
+
+      <!-- Error global -->
+      @if (error) {
+        <div class="error">{{ error }}</div>
+      }
+      <!-- Registro -->
+      <div class="row-center">
+        <span>¿No tienes cuenta?</span>
+        <a class="link" routerLink="/auth/register">Crear cuenta</a>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Onda inferior -->
+  <div class="wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 140" preserveAspectRatio="none" focusable="false">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#90caf9" />
+          <stop offset="100%" stop-color="#bbdefb" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M0,80 C240,160 480,0 720,60 C960,120 1200,40 1440,90 L1440,140 L0,140 Z"
+        fill="url(#grad)"
+        opacity="0.4"
+      />
+    </svg>
+  </div>
+
+  <footer class="legal">© {{ currentYear }} CRM Fontanero · Todos los derechos reservados</footer>
+</div>

@@ -4,5 +4,10 @@
   "eslint.format.enable": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "javascript": "html"
+  },
+  "tailwindCSS.emmetCompletions": true
 }

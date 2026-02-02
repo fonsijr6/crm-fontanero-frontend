@@ -1,5 +1,4 @@
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/auth/pages/login.component';
 import { NgModule } from '@angular/core';
 import { authGuard } from './components/auth/guards/auth.guard';
 import { clientsResolver } from './resolvers/clients/client.resolver';
@@ -8,7 +7,13 @@ import { stockResolver } from './resolvers/stock/stock.resolver';
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () =>
+      import('./components/auth/pages/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./components/main/pages/dashboard.component').then((m) => m.DashboardComponent),
   },
   {
     path: 'clients',

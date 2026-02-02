@@ -1,36 +1,37 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.dev';
 import { AUTH_API } from '../constants/auth-api-const';
 import { LoginResponse } from '../models/auth.models';
+import { SafeStorage } from '../../../core/safe-storage-service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
-  private platformId = inject(PLATFORM_ID);
+  private storage = inject(SafeStorage);
 
-  private token$ = new BehaviorSubject<string | null>(
-    this.isBrowser() ? localStorage.getItem('token') : null,
-  );
+  // No leemos localStorage aquí para evitar SSR issues
+  private token$ = new BehaviorSubject<string | null>(null);
 
-  private isBrowser() {
-    return isPlatformBrowser(this.platformId);
+  constructor() {
+    // Cargar token de forma segura solo en navegador
+    const existing = this.storage.getItem('token');
+    if (existing) {
+      this.token$.next(existing);
+    }
   }
 
-  get accessToken() {
+  get accessToken(): string | null {
     return this.token$.value;
   }
 
   setToken(token: string | null) {
-    if (!this.isBrowser()) return;
-
     if (token) {
-      localStorage.setItem('token', token);
+      this.storage.setItem('token', token);
       this.token$.next(token);
     } else {
-      localStorage.removeItem('token');
+      this.storage.removeItem('token');
       this.token$.next(null);
     }
   }
