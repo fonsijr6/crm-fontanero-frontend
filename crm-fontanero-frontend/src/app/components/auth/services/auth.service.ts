@@ -1,9 +1,10 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.dev';
 import { AUTH_API } from '../constants/auth-api-const';
+import { LoginResponse } from '../models/auth.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -34,20 +35,30 @@ export class AuthService {
     }
   }
 
-  login(data: { email: string; password: string }) {
+  login(data: { email: string; password: string }): Observable<LoginResponse> {
     return this.http
-      .post<any>(`${environment.apiUrl}${AUTH_API.LOGIN}`, data, { withCredentials: true })
+      .post<LoginResponse>(`${environment.apiUrl}${AUTH_API.LOGIN}`, data, {
+        withCredentials: true,
+      })
       .pipe(tap((res) => this.setToken(res.token)));
   }
 
-  refresh() {
+  refresh(): Observable<LoginResponse> {
     return this.http
-      .post<any>(`${environment.apiUrl}${AUTH_API.REFRESH}`, {}, { withCredentials: true })
+      .post<LoginResponse>(
+        `${environment.apiUrl}${AUTH_API.REFRESH}`,
+        {},
+        { withCredentials: true },
+      )
       .pipe(tap((res) => this.setToken(res.token)));
   }
 
-  logout() {
+  logout(): Observable<void> {
     this.setToken(null);
-    return this.http.post(`${environment.apiUrl}${AUTH_API.LOGOUT}`, {}, { withCredentials: true });
+    return this.http.post<void>(
+      `${environment.apiUrl}${AUTH_API.LOGOUT}`,
+      {},
+      { withCredentials: true },
+    );
   }
 }

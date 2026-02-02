@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ClientService } from '../services/client.service';
 import { catchError, of, take, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-clients',
@@ -14,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ClientComponent implements OnInit {
   private clientService = inject(ClientService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -43,5 +45,10 @@ export class ClientComponent implements OnInit {
 
   goStock() {
     this.router.navigate(['/stock']);
+  }
+
+  logOut() {
+    this.authService.logout().pipe().subscribe();
+    this.router.navigate(['/login']);
   }
 }
