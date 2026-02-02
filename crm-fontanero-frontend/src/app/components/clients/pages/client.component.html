@@ -1,18 +1,31 @@
 <h2>Clientes</h2>
-  <button (click)="reload()">Recargar</button>
-  @if(clients.length) {
-    <table>
-        <thead><tr><th>Nombre</th><th>Teléfono</th><th>Dirección</th></tr></thead>
-            <tbody>
-                @for (c of clients; track $index) {
-                    <tr>
-                    <td>{{ c.name }}</td>
-                    <td>{{ c.phone || '-' }}</td>
-                    <td>{{ c.address || '-' }}</td>
-                </tr>
-                }
-            </tbody>
-    </table>
-  }@else {empty}
-  
-  <ng-template #empty><p>No hay clientes todavía.</p></ng-template>
+@if (clients.length > 0) {
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido 1</th>
+        <th>Apellido 2</th>
+        <th>Telefono</th>
+        <th>Dirección</th>
+        <th>Notas</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of clients; track $index) {
+        <tr>
+          <td>{{ c.name }}</td>
+          <td>{{ c.surname1 }}</td>
+          <td>{{ c.surname2 }}</td>
+          <td>{{ c.phone || '-' }}</td>
+          <td>{{ c.address || '-' }}</td>
+          <td>{{ c.notes }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>No hay clientes todavía.</p>
+}
+<button (click)="reload()">Recargar</button>
+<button (click)="goStock()">Stock</button>

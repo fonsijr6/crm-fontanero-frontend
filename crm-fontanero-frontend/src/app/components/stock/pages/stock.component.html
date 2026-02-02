@@ -1,0 +1,26 @@
+<h2>Stock</h2>
+@if (stock.length > 0) {
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Material</th>
+        <th>Uni. Almacén</th>
+        <th>Uni. Furgoneta</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of stock; track $index) {
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.typeMaterial }}</td>
+          <td>{{ item.warehouseUnits }}</td>
+          <td>{{ item.vanUnits }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>No hay stock todavía.</p>
+}
+<button (click)="reload()">Recargar</button>

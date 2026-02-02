@@ -1,19 +1,30 @@
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/pages/login.component';
 import { NgModule } from '@angular/core';
-import { ClientComponent } from './components/clients/pages/client.component';
+import { authGuard } from './components/auth/guards/auth.guard';
+import { clientsResolver } from './resolvers/clients/client.resolver';
+import { stockResolver } from './resolvers/stock/stock.resolver';
 
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'clients',
-    component: ClientComponent
+    canActivate: [authGuard],
+    resolve: { clients: clientsResolver },
+    loadComponent: () =>
+      import('./components/clients/pages/client.component').then((m) => m.ClientComponent),
+  },
+  {
+    path: 'stock',
+    canActivate: [authGuard],
+    resolve: { stock: stockResolver },
+    loadComponent: () =>
+      import('./components/stock/pages/stock.component').then((m) => m.StockComponent),
   },
   { path: '', pathMatch: 'full', redirectTo: 'login' },
-//   { path: '**', redirectTo: 'clients' }
 ];
 
 @NgModule({ imports: [], exports: [RouterModule] })

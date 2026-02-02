@@ -1,18 +1,34 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseApiService } from '../../../services/base-api.service';
+import { Client } from '../models/client';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
+export class ClientService extends BaseApiService {
+  constructor() {
+    super();
+    this.setController('clients');
+  }
 
-export class ClientService {
-    private httpp = inject(HttpClient);
+  getClients(): Observable<Client[]> {
+    return this.getAll<Client[]>();
+  }
 
-    url = 'http://localhost:4000/api/clients';
-    userId = '697a074ae69d8fab108fb6ab';
+  getClientById(id: string): Observable<Client> {
+    return this.getOne<Client>(id);
+  }
 
-    getClients(): Observable<any> {
-        return this.httpp.get(`${this.url}`);
-    }
+  createClient(data: Partial<Client>): Observable<Client> {
+    return this.post<Client>(data);
+  }
+
+  updateClient(id: string, data: Partial<Client>): Observable<Client> {
+    return this.put<Client>(id, data);
+  }
+
+  deleteClient(id: string): Observable<any> {
+    return this.delete(id);
+  }
 }
