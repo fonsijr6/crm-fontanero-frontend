@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ClientService } from '../services/client.service';
 import { catchError, of, take, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-clients',

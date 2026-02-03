@@ -1,0 +1,27 @@
+<mat-toolbar color="transparent" class="toolbar">
+  <div class="container toolbar-inner">
+    <!-- Botón hamburguesa SOLO móvil -->
+    <button mat-icon-button class="only-handset" (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="title">Bienvenido, Alfonso</span>
+    <span class="spacer"></span>
+
+    <button mat-icon-button matTooltip="Buscar">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <button mat-icon-button matBadge="3" matBadgeColor="primary" matTooltip="Notificaciones">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="toggleTheme()">
+      <mat-icon>{{ theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    </button>
+
+    <button mat-icon-button matTooltip="Perfil">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

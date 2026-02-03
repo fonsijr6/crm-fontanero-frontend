@@ -1,0 +1,17 @@
+<mat-sidenav-container class="shell">
+  <!-- Sidebar persistente en todas las páginas -->
+  <app-sidebar></app-sidebar>
+  <!-- Contenido principal -->
+  <mat-sidenav-content class="content">
+    <!-- Toolbar fija -->
+
+    <app-toolbar
+      [theme]="theme"
+      [toggleTheme]="toggleTheme"
+      [toggleSidenav]="toggleSidebar"
+    ></app-toolbar>
+
+    <!-- Aquí se renderiza Dashboard por defecto y el resto según la ruta -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

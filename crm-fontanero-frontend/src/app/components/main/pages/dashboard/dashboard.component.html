@@ -1,0 +1,144 @@
+<div class="container">
+  <!-- KPI CARDS -->
+  <section class="kpi-grid">
+    <!-- KPI: Clientes -->
+    <mat-card class="kpi-card">
+      <!-- icono decorativo fijo -->
+      <div class="kpi-deco">
+        <mat-icon class="material-symbols-rounded">face</mat-icon>
+      </div>
+
+      <div class="kpi-head">
+        <h1>Clientes</h1>
+      </div>
+
+      <div class="kpi-value">{{ totalClients() }}</div>
+
+      <div class="kpi-actions">
+        <button mat-stroked-button color="primary" (click)="go('/clients')">
+          <mat-icon class="material-symbols-rounded">people</mat-icon>
+          Ver clientes
+        </button>
+        <button mat-stroked-button color="primary" (click)="go('/clients/new')">
+          <mat-icon class="material-symbols-rounded">person_add</mat-icon>
+          Añadir cliente
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- KPI: Stock -->
+    <mat-card class="kpi-card">
+      <div class="kpi-deco">
+        <mat-icon class="material-symbols-rounded">inventory_2</mat-icon>
+      </div>
+
+      <div class="kpi-head">
+        <h1>Stock</h1>
+      </div>
+
+      <div class="kpi-value">{{ totalStock() }}</div>
+
+      <div class="kpi-actions">
+        <button mat-stroked-button color="primary" (click)="go('/stock')">
+          <mat-icon class="material-symbols-rounded">inventory_2</mat-icon>
+          Ver stock
+        </button>
+        <button mat-stroked-button color="primary" (click)="go('/stock/new')">
+          <mat-icon class="material-symbols-rounded">add_box</mat-icon>
+          Añadir material
+        </button>
+      </div>
+    </mat-card>
+  </section>
+
+  <!-- AGENDA / Próximos trabajos -->
+  <section class="agenda-carousel-card">
+    <h3 class="agenda-title">Agenda de hoy — 10/10/2026</h3>
+
+    <div class="carousel-wrapper">
+      <!-- Botón PREV -->
+      <button class="nav-btn prev" (click)="prevItem()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <!-- VENTANA -->
+      <div class="carousel-window">
+        <!-- CINTA -->
+        <div class="carousel-track" [style.transform]="'translateX(-' + current * 100 + '%)'">
+          <!-- ITEMS -->
+          <div class="carousel-slide" *ngFor="let item of agenda">
+            <div class="agenda-item">
+              <div class="agenda-icon">
+                <mat-icon>{{ item.icon }}</mat-icon>
+              </div>
+
+              <div class="agenda-info">
+                <div class="agenda-row">
+                  <span class="agenda-time">{{ item.hour }}</span>
+                  <span class="agenda-job">{{ item.title }}</span>
+                </div>
+                <div class="agenda-sub">Cliente: {{ item.client }}</div>
+                <div class="agenda-sub">{{ item.address }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón NEXT -->
+      <button class="nav-btn next" (click)="nextItem()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <!-- PUNTOS -->
+    <div class="dots">
+      <span
+        class="dot"
+        *ngFor="let item of agenda; let i = index"
+        [class.active]="i === current"
+        (click)="current = i"
+      ></span>
+    </div>
+  </section>
+
+  <!-- TABLE: Últimos clientes -->
+  <section class="modern-table-card">
+    <h3>Últimos clientes</h3>
+
+    <table mat-table [dataSource]="latestClients" class="modern-table">
+      <!-- Nombre -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <!-- Teléfono -->
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let row">{{ row.phone }}</td>
+      </ng-container>
+
+      <!-- Dirección -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Dirección</th>
+        <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+      </ng-container>
+
+      <!-- Acciones: Botón "Ver" -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-col"></th>
+        <td mat-cell *matCellDef="let row" class="actions-col">
+          <mat-icon (click)="onViewClient(row)" class="ver-btn__icon" aria-hidden="true"
+            >visibility</mat-icon
+          >
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </section>
+
+  <div class="pad-bottom"></div>
+</div>

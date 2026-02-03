@@ -14,9 +14,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
-import { SafeStorage } from '../../../core/safe-storage-service';
-import { AuthService } from '../../auth/services/auth.service';
+import { SafeStorage } from '../../../../core/safe-storage-service';
+import { AuthService } from '../../../auth/services/auth.service';
 import moment from 'moment';
+import { SidebarComponent } from '../../../../shared/sidebar/sidebar.component';
 
 type Theme = 'light' | 'dark';
 // Se eliminará
@@ -33,12 +34,10 @@ interface ClientRow {
   styleUrls: ['./dashboard.component.css'],
   imports: [
     CommonModule,
-    RouterLink,
     LayoutModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
-    MatListModule,
     MatButtonModule,
     MatCardModule,
     MatTableModule,
@@ -139,11 +138,6 @@ export class DashboardComponent implements OnInit {
   // Navegación
   go(path: string): void {
     this.router.navigate([path]);
-  }
-
-  logOut() {
-    this.authService.logout().pipe().subscribe();
-    this.router.navigate(['/login']);
   }
 
   onViewClient(row: any): void {

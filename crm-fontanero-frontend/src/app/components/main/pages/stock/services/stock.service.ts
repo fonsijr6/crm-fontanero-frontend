@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BaseApiService } from '../../../services/base-api.service';
+import { BaseApiService } from '../../../../../services/base-api.service';
 import { StockItem } from '../models/stock.models';
 import { Observable } from 'rxjs';
 

@@ -1,0 +1,54 @@
+/* ===== Toolbar ===== */
+.toolbar {
+  position: sticky;
+  top: 0;
+  backdrop-filter: saturate(1.1) blur(8px);
+  background: transparent;
+  z-index: 2;
+  padding-inline: clamp(8px, 2vw, 16px);
+}
+
+.toolbar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.only-handset {
+  display: none;
+}
+.title {
+  font-weight: 800;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem); /* más grande en desktop */
+  margin-left: 4px;
+}
+.spacer {
+  flex: 1;
+}
+
+/* ===== Content + Container centrado ===== */
+.content {
+  min-height: 100%;
+  padding: 16px 12px 32px;
+}
+.container {
+  width: 100%;
+  max-width: 1320px; /* 👈 limita ancho en escritorio */
+  margin: 0 auto; /* 👈 centra contenido */
+  padding-inline: clamp(8px, 2vw, 20px);
+}
+
+.intro .subtitle {
+  color: rgba(0, 0, 0, 0.62);
+  margin: 6px 0 18px;
+}
+
+.only-handset {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .only-handset {
+    display: inline-flex;
+  }
+}
