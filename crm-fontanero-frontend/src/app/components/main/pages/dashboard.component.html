@@ -31,6 +31,10 @@
         <mat-icon matListItemIcon>inventory_2</mat-icon>
         <span matListItemTitle>Stock</span>
       </a>
+      <a mat-list-item routerLink="/agenda">
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <span matListItemTitle>Agenda</span>
+      </a>
     </mat-nav-list>
 
     <div class="sidebar-bottom">
@@ -45,43 +49,33 @@
   <mat-sidenav-content class="content">
     <!-- TOOLBAR -->
     <mat-toolbar color="transparent" class="toolbar">
-      <button
-        mat-icon-button
-        (click)="sidenav.toggle()"
-        class="only-handset"
-        aria-label="Abrir menú"
-      >
-        <mat-icon>menu</mat-icon>
-      </button>
+      <div class="container toolbar-inner">
+        <button mat-icon-button ... class="only-handset">
+          <mat-icon>menu</mat-icon>
+        </button>
 
-      <span class="title">Bienvenido, Alfonso</span>
-      <span class="spacer"></span>
+        <span class="title">Bienvenido, Alfonso</span>
 
-      <button mat-icon-button matTooltip="Buscar">
-        <mat-icon>search</mat-icon>
-      </button>
+        <span class="spacer"></span>
 
-      <button mat-icon-button matBadge="3" matBadgeColor="primary" matTooltip="Notificaciones">
-        <mat-icon>notifications</mat-icon>
-      </button>
+        <button mat-icon-button matTooltip="Buscar">
+          <mat-icon>search</mat-icon>
+        </button>
 
-      <button
-        mat-icon-button
-        (click)="toggleTheme()"
-        [matTooltip]="theme() === 'light' ? 'Modo oscuro' : 'Modo claro'"
-      >
-        <mat-icon>{{ theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
-      </button>
+        <button mat-icon-button matBadge="3" matBadgeColor="primary" matTooltip="Notificaciones">
+          <mat-icon>notifications</mat-icon>
+        </button>
 
-      <button mat-icon-button matTooltip="Perfil">
-        <mat-icon>account_circle</mat-icon>
-      </button>
+        <button mat-icon-button (click)="toggleTheme()">
+          <mat-icon>{{ theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+        </button>
+
+        <button mat-icon-button matTooltip="Perfil">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
     </mat-toolbar>
     <div class="container">
-      <section class="intro">
-        <p class="subtitle">Aquí puedes gestionar tus clientes y el stock.</p>
-      </section>
-
       <!-- KPI CARDS -->
       <section class="kpi-grid">
         <!-- KPI: Clientes -->
@@ -92,15 +86,19 @@
           </div>
 
           <div class="kpi-head">
-            <h4>Clientes</h4>
+            <h1>Clientes</h1>
           </div>
 
           <div class="kpi-value">{{ totalClients() }}</div>
 
           <div class="kpi-actions">
+            <button mat-stroked-button color="primary" (click)="go('/clients')">
+              <mat-icon class="material-symbols-rounded">people</mat-icon>
+              Ver clientes
+            </button>
             <button mat-stroked-button color="primary" (click)="go('/clients/new')">
               <mat-icon class="material-symbols-rounded">person_add</mat-icon>
-              Crear cliente
+              Añadir cliente
             </button>
           </div>
         </mat-card>
@@ -112,25 +110,80 @@
           </div>
 
           <div class="kpi-head">
-            <h4>Stock</h4>
+            <h1>Stock</h1>
           </div>
 
           <div class="kpi-value">{{ totalStock() }}</div>
 
           <div class="kpi-actions">
+            <button mat-stroked-button color="primary" (click)="go('/stock')">
+              <mat-icon class="material-symbols-rounded">inventory_2</mat-icon>
+              Ver stock
+            </button>
             <button mat-stroked-button color="primary" (click)="go('/stock/new')">
               <mat-icon class="material-symbols-rounded">add_box</mat-icon>
-              Añadir producto
+              Añadir material
             </button>
           </div>
         </mat-card>
       </section>
 
+      <!-- AGENDA / Próximos trabajos -->
+      <section class="agenda-carousel-card">
+        <h3 class="agenda-title">Agenda de hoy — 10/10/2026</h3>
+
+        <div class="carousel-wrapper">
+          <!-- Botón PREV -->
+          <button class="nav-btn prev" (click)="prevItem()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <!-- VENTANA -->
+          <div class="carousel-window">
+            <!-- CINTA -->
+            <div class="carousel-track" [style.transform]="'translateX(-' + current * 100 + '%)'">
+              <!-- ITEMS -->
+              <div class="carousel-slide" *ngFor="let item of agenda">
+                <div class="agenda-item">
+                  <div class="agenda-icon">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                  </div>
+
+                  <div class="agenda-info">
+                    <div class="agenda-row">
+                      <span class="agenda-time">{{ item.hour }}</span>
+                      <span class="agenda-job">{{ item.title }}</span>
+                    </div>
+                    <div class="agenda-sub">Cliente: {{ item.client }}</div>
+                    <div class="agenda-sub">{{ item.address }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón NEXT -->
+          <button class="nav-btn next" (click)="nextItem()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <!-- PUNTOS -->
+        <div class="dots">
+          <span
+            class="dot"
+            *ngFor="let item of agenda; let i = index"
+            [class.active]="i === current"
+            (click)="current = i"
+          ></span>
+        </div>
+      </section>
+
       <!-- TABLE: Últimos clientes -->
-      <section class="table-section">
+      <section class="modern-table-card">
         <h3>Últimos clientes</h3>
 
-        <table mat-table [dataSource]="latestClients" class="mat-elevation-z1 full-width">
+        <table mat-table [dataSource]="latestClients" class="modern-table">
           <!-- Nombre -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Nombre</th>
@@ -147,6 +200,16 @@
           <ng-container matColumnDef="address">
             <th mat-header-cell *matHeaderCellDef>Dirección</th>
             <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+          </ng-container>
+
+          <!-- Acciones: Botón "Ver" -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actions-col"></th>
+            <td mat-cell *matCellDef="let row" class="actions-col">
+              <mat-icon (click)="onViewClient(row)" class="ver-btn__icon" aria-hidden="true"
+                >visibility</mat-icon
+              >
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

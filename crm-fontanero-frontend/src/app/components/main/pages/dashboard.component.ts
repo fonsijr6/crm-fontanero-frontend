@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SafeStorage } from '../../../core/safe-storage-service';
 import { AuthService } from '../../auth/services/auth.service';
+import moment from 'moment';
 
 type Theme = 'light' | 'dark';
 // Se eliminará
@@ -34,7 +35,6 @@ interface ClientRow {
     CommonModule,
     RouterLink,
     LayoutModule,
-    // Material
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
   totalStock = signal<number>(35);
 
   // Tabla últimos clientes
-  displayedColumns = ['name', 'phone', 'address'];
+  displayedColumns = ['name', 'phone', 'address', 'actions'];
   // Esto realmente serán los ultimos 4 clientes creados con fecha mas reciente
   latestClients: ClientRow[] = [
     { name: 'María García', phone: '(123) 456-780', address: 'C/ Llecacea, 8' },
@@ -74,6 +74,34 @@ export class DashboardComponent implements OnInit {
     { name: 'Ana López', phone: '722 987 321', address: 'C/ Valleparanga 15A, 04600' },
     { name: 'David Rodríguez', phone: '654 321 987', address: 'C/ Beillecía, 63-123-45' },
   ];
+
+  today = moment();
+
+  agenda = [
+    {
+      icon: 'build',
+      hour: '09:00',
+      title: 'Instalación de caldera',
+      client: 'Mario García',
+      address: 'C/ Itacena, 8',
+    },
+    {
+      icon: 'plumbing',
+      hour: '11:30',
+      title: 'Reparación fuga baño',
+      client: 'Ana López',
+      address: 'C/ Vallegran, 154',
+    },
+    {
+      icon: 'home_repair_service',
+      hour: '16:00',
+      title: 'Cambio llave paso',
+      client: 'Juan Pérez',
+      address: 'Av. Laguna 120',
+    },
+  ];
+
+  current = 0;
 
   ngOnInit(): void {
     // Modo responsive
@@ -116,5 +144,17 @@ export class DashboardComponent implements OnInit {
   logOut() {
     this.authService.logout().pipe().subscribe();
     this.router.navigate(['/login']);
+  }
+
+  onViewClient(row: any): void {
+    this.router.navigate(['/clients/view']);
+  }
+
+  nextItem() {
+    this.current = (this.current + 1) % this.agenda.length;
+  }
+
+  prevItem() {
+    this.current = (this.current - 1 + this.agenda.length) % this.agenda.length;
   }
 }

@@ -79,6 +79,12 @@
   padding-inline: clamp(8px, 2vw, 16px);
 }
 
+.toolbar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .only-handset {
   display: none;
 }
@@ -134,8 +140,8 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 44px;
-  height: 44px;
+  width: 5em;
+  height: 5em;
   display: grid;
   place-items: center;
   border-radius: 12px;
@@ -155,7 +161,7 @@
 .kpi-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
 }
 .kpi-head h4 {
@@ -167,7 +173,8 @@
 .kpi-value {
   font-size: clamp(1.9rem, 3.8vw, 2.6rem);
   font-weight: 800;
-  align-self: center;
+  align-self: auto;
+  text-align: center;
   margin: 4px 0;
 }
 
@@ -215,15 +222,238 @@
 }
 
 /* ===== Tabla: Últimos clientes (densidad cómoda) ===== */
-.table-section h3 {
-  margin: 8px 0 12px;
-  font-weight: 800;
+/* === Card contenedora === */
+.modern-table-card {
+  background: #ffffffec;
+  backdrop-filter: blur(6px);
+  padding: 22px 28px;
+  border-radius: 18px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(0, 0, 0, 0.03);
+  margin-top: 24px;
 }
 
-table.full-width {
+.modern-table-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* === Tabla === */
+.modern-table {
   width: 100%;
-  border-radius: 12px;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+/* Encabezados */
+.modern-table th {
+  text-align: left;
+  padding: 12px 6px;
+  color: #3a3a3a;
+  font-weight: 600;
+  border-bottom: 2px solid #eaeaea;
+}
+
+/* Filas */
+.modern-table td {
+  padding: 14px 6px;
+  border-bottom: 1px solid #efefef;
+  color: #444;
+}
+
+/* Hover suave por fila */
+.modern-table tr:hover td {
+  background: #f8faff;
+}
+
+/* Última fila sin borde */
+.modern-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Columna acciones: alineación a la derecha y ancho mínimo */
+.actions-col {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+  padding-right: 2px; /* ajusta según tu layout */
+}
+
+/* Botón "Ver" minimal */
+.ver-btn {
+  --btn-border: #d7e3ff;
+  --btn-bg-hover: #eef4ff;
+  border-color: var(--btn-border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: none;
+}
+
+.ver-btn:hover {
+  background: var(--btn-bg-hover);
+}
+
+.ver-btn__icon {
+  font-size: 2em;
+  height: 1em;
+  width: 1em;
+  color: #3b82f6;
+}
+
+/* ===== Agenda Card ===== */
+.agenda-carousel-card {
+  background: #ffffffec;
+  backdrop-filter: blur(6px);
+  padding: 22px 28px;
+  border-radius: 18px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(0, 0, 0, 0.03);
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+
+.agenda-title {
+  font-size: 1.28rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* Estructura externa */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Ventana del carrusel */
+.carousel-window {
   overflow: hidden;
+  width: 100%;
+  border-radius: 14px;
+}
+
+/* Cinta */
+.carousel-track {
+  display: flex;
+  transition: transform 0.35s ease;
+  width: 100%;
+}
+
+/* Cada slide ocupa el 100% del ancho */
+.carousel-slide {
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilo del item agenda */
+.agenda-item {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 2px;
+}
+
+.agenda-icon {
+  width: 46px;
+  height: 46px;
+  background: rgba(59, 130, 246, 0.12);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.agenda-icon mat-icon {
+  font-size: 22px;
+  color: #3b82f6;
+}
+
+.agenda-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.agenda-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.agenda-time {
+  font-weight: 700;
+}
+
+.agenda-job {
+  font-weight: 600;
+}
+
+.agenda-sub {
+  color: #6b7280;
+}
+
+/* Botones del carrusel */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #eef4ff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
+  z-index: 3;
+}
+
+.nav-btn:hover {
+  background: #dbe5ff;
+}
+
+.nav-btn mat-icon {
+  color: #2563eb;
+}
+
+.prev {
+  left: -10px;
+}
+.next {
+  right: -10px;
+}
+
+/* Puntos */
+.dots {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d0d7e8;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dot.active {
+  background: #2563eb;
 }
 
 /* Ajustes de densidad Material (más legible en desktop) */
