@@ -44,13 +44,13 @@ export const routes: Routes = [
                 (m) => m.ClientComponent,
               ),
           },
-          // {
-          //   path: 'new',
-          //   loadComponent: () =>
-          //     import('./components/main/pages/new-client.component').then(
-          //       (m) => m.NewClientComponent,
-          //     ),
-          // },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./components/main/pages/clients/pages/new-client/new-client.component').then(
+                (m) => m.NewClientComponent,
+              ),
+          },
           // {
           //   path: 'edit',
           //   loadComponent: () =>
@@ -104,7 +104,7 @@ export const routes: Routes = [
       },
       // AGENDA
       // {
-      //   path: 'agenda',
+      //   path: 'agend',
       //   loadComponent: () =>
       //     import('./components/main/pages/agenda.component')
       //       .then(m => m.AgendaComponent)

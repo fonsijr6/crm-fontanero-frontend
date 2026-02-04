@@ -1,0 +1,47 @@
+<div class="add-client-container">
+
+  <h1>Añadir cliente</h1>
+
+  <form [formGroup]="clientForm" (ngSubmit)="addClient()">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" required>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Primer apellido</mat-label>
+        <input matInput formControlName="surname1" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Segundo apellido</mat-label>
+        <input matInput formControlName="surname2">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone" type="tel">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="address">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notas</mat-label>
+      <textarea matInput formControlName="notes" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="btn-wrapper">
+      <button mat-flat-button type="submit" color="primary" class="submit-btn">
+        Añadir
+      </button>
+    </div>
+
+  </form>
+
+</div>

@@ -19,7 +19,7 @@
           <mat-icon class="material-symbols-rounded">people</mat-icon>
           Ver clientes
         </button>
-        <button mat-stroked-button color="primary" (click)="go('/clients/new')">
+        <button mat-stroked-button color="primary" (click)="go(`${routes.NEW_CLIENT}`)">
           <mat-icon class="material-symbols-rounded">person_add</mat-icon>
           Añadir cliente
         </button>
@@ -39,11 +39,11 @@
       <div class="kpi-value">{{ totalStock() }}</div>
 
       <div class="kpi-actions">
-        <button mat-stroked-button color="primary" (click)="go('/stock')">
+        <button mat-stroked-button color="primary" (click)="go(`${routes.STOCK}`)">
           <mat-icon class="material-symbols-rounded">inventory_2</mat-icon>
           Ver stock
         </button>
-        <button mat-stroked-button color="primary" (click)="go('/stock/new')">
+        <button mat-stroked-button color="primary" (click)="go(`${routes.NEW_ITEM}`)">
           <mat-icon class="material-symbols-rounded">add_box</mat-icon>
           Añadir material
         </button>
