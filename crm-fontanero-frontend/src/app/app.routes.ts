@@ -13,9 +13,7 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./components/auth/pages/login.component').then(
-        (m) => m.LoginComponent
-      ),
+      import('./components/auth/pages/login.component').then((m) => m.LoginComponent),
   },
   {
     path: '',
@@ -33,12 +31,13 @@ export const routes: Routes = [
             (m) => m.DashboardComponent,
           ),
       },
+      // CLIENTES
       {
         path: 'clients',
         children: [
           {
             path: '',
-            resolve: clientsResolver,
+            resolve: { clients: clientsResolver },
             loadComponent: () =>
               import('./components/main/pages/clients/pages/client.component').then(
                 (m) => m.ClientComponent,
@@ -52,17 +51,17 @@ export const routes: Routes = [
               ),
           },
           // {
-          //   path: 'edit',
+          //   path: 'edit/:id',
           //   loadComponent: () =>
-          //     import('./components/main/pages/edit-client.component').then(
-          //       (m) => m.NewClientComponent,
+          //     import('./components/main/pages/clients/pages/new-client/edit-client.component').then(
+          //       (m) => m.EditClientComponent,
           //     ),
           // },
           // {
-          //   path: ':id',
+          //   path: 'view/:id',
           //   loadComponent: () =>
-          //     import('./components/main/pages/client-detail.component').then(
-          //       (m) => m.ClientDetailComponent,
+          //     import('./components/main/pages/clients/pages/new-client/detail-client.component').then(
+          //       (m) => m.DetailClientComponent,
           //     ),
           // },
         ],
@@ -73,7 +72,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            resolve: stockResolver,
+            resolve: { stock: stockResolver },
             loadComponent: () =>
               import('./components/main/pages/stock/pages/stock.component').then(
                 (m) => m.StockComponent,

@@ -21,7 +21,7 @@
         </button>
         <button mat-stroked-button color="primary" (click)="go(`${routes.NEW_CLIENT}`)">
           <mat-icon class="material-symbols-rounded">person_add</mat-icon>
-          Añadir cliente
+          Nuevo cliente
         </button>
       </div>
     </mat-card>
@@ -45,7 +45,7 @@
         </button>
         <button mat-stroked-button color="primary" (click)="go(`${routes.NEW_ITEM}`)">
           <mat-icon class="material-symbols-rounded">add_box</mat-icon>
-          Añadir material
+          Nuevo material
         </button>
       </div>
     </mat-card>
@@ -93,12 +93,9 @@
 
     <!-- PUNTOS -->
     <div class="dots">
-      <span
-        class="dot"
-        *ngFor="let item of agenda; let i = index"
-        [class.active]="i === current"
-        (click)="current = i"
-      ></span>
+      @for (item of agenda; track $index) {
+        <span class="dot" [class.active]="$index === current" (click)="current = $index"></span>
+      }
     </div>
   </section>
 

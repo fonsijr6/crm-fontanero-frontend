@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, PLATFORM_ID, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 
 // Angular Material
@@ -14,7 +14,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SafeStorage } from '../../../../core/safe-storage-service';
-import { AuthService } from '../../../auth/services/auth.service';
 import moment from 'moment';
 import { ROUTES_API } from '../../../../constants/routes/routes.const';
 

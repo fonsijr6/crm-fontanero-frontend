@@ -1,34 +1,76 @@
-<h2>Clientes</h2>
+<section class="clientes">
+  <header class="header">
+    <div>
+      <h1 class="titulo">Clientes</h1>
+      <p class="subtitulo">Tus clientes, Alfonso</p>
+    </div>
 
-<div class="text-green-500 text-2x1">Tailwind funciona ✔</div>
-
-@if (clients.length > 0) {
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Apellido 1</th>
-        <th>Apellido 2</th>
-        <th>Telefono</th>
-        <th>Dirección</th>
-        <th>Notas</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (c of clients; track $index) {
-        <tr>
-          <td>{{ c.name }}</td>
-          <td>{{ c.surname1 }}</td>
-          <td>{{ c.surname2 }}</td>
-          <td>{{ c.phone || '-' }}</td>
-          <td>{{ c.address || '-' }}</td>
-          <td>{{ c.notes }}</td>
-        </tr>
+    <mat-form-field appearance="outline" class="buscador">
+      <mat-label>Buscar</mat-label>
+      <input
+        matInput
+        placeholder="Nombre, teléfono o dirección"
+        [(ngModel)]="filterText"
+        (ngModelChange)="applyFilter()"
+      />
+      @if (filterText) {
+        <button matSuffix mat-icon-button aria-label="Limpiar" (click)="clearFilter()">
+          <mat-icon>close</mat-icon>
+        </button>
       }
-    </tbody>
-  </table>
-} @else {
-  <p>No hay clientes todavía.</p>
-}
-<button (click)="reload()">Recargar</button>
-<button (click)="goStock()">Stock</button>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </header>
+
+  <mat-divider></mat-divider>
+
+  <!-- Virtual scroll para rendimiento -->
+  <cdk-virtual-scroll-viewport itemSize="104" class="viewport">
+    @for (c of filtered; track $index) {
+      <div class="fila">
+        <mat-card class="card" appearance="outlined">
+          <!-- AVATAR con iniciales -->
+          <div class="avatar" [style.--bg]="getAvatarBg(c.name)" [style.--fg]="getAvatarFg(c.name)">
+            <span class="initials" aria-hidden="true">{{ getInitials(c.name) }}</span>
+            <span class="sr-only">Cliente: {{ c.name }}</span>
+          </div>
+
+          <!-- INFO -->
+          <div class="info">
+            <div class="nombre">{{ c.name }}</div>
+            <div class="telefono">
+              <mat-icon class="icon-inline">call</mat-icon>
+              <a [href]="'tel:' + c.phone">{{ c.phone }}</a>
+            </div>
+            <div class="direccion">
+              <mat-icon class="icon-inline">place</mat-icon>
+              <span class="truncate">{{ c.address }}</span>
+            </div>
+            @if (c.notes) {
+              <div class="nota">
+                <mat-icon class="icon-inline">sticky_note_2</mat-icon>
+                <span class="truncate">{{ c.notes }}</span>
+              </div>
+            }
+          </div>
+          <!-- ACCIONES -->
+          <div class="acciones">
+            <button mat-icon-button color="primary" (click)="onEdit(c)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDelete(c)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onView()"><mat-icon>visibility</mat-icon></button>
+          </div>
+        </mat-card>
+      </div>
+    }
+  </cdk-virtual-scroll-viewport>
+  @if (filtered.length === 0) {
+    <div class="vacio">
+      <mat-icon>inbox</mat-icon>
+      <p>No hay clientes que coincidan con la búsqueda.</p>
+    </div>
+  }
+</section>

@@ -4,40 +4,48 @@ import { take, tap } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from '../../services/client.service';
 import { ModelFormGroup } from '../../../../../../models/model-form-group.models';
-import { Client } from '../../models/client';
+import { Client, NewClient } from '../../models/client';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { ROUTES_API } from '../../../../../../constants/routes/routes.const';
+import { MainLayoutService } from '../../../../services/main-layout.service';
 
 @Component({
   selector: 'app-new-clients',
   templateUrl: './new-client.component.html',
   styleUrls: ['./new-client.component.css'],
   standalone: true,
-  imports: [CommonModule, MatFormField, MatLabel, ReactiveFormsModule, MatInputModule,MatButtonModule ],
+  imports: [
+    CommonModule,
+    MatFormField,
+    MatLabel,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
 })
 export class NewClientComponent implements OnInit {
   private clientService = inject(ClientService);
-  private router = inject(Router)
+  private mainLayoutService = inject(MainLayoutService);
   private readonly _fb = inject(FormBuilder);
 
   loading = false;
 
-  clientForm: FormGroup<ModelFormGroup<Client>> = this.createForm();
+  clientForm: FormGroup<ModelFormGroup<NewClient>> = this.createForm();
 
   ngOnInit() {}
 
   /**
    * Creación del formulario
-   * @returns {FormGroup<ModelFormGroup<Client>>} 
+   * @returns {FormGroup<ModelFormGroup<NewClient>>}
    */
-  private createForm(): FormGroup<ModelFormGroup<Client>> {
+  private createForm(): FormGroup<ModelFormGroup<NewClient>> {
     return this._fb.nonNullable.group({
       name: this._fb.nonNullable.control('', { validators: [Validators.required] }),
       surname1: this._fb.nonNullable.control('', { validators: [Validators.required] }),
-      surname2: this._fb.nonNullable.control('', { validators: [Validators.required] }),
+      surname2: this._fb.nonNullable.control(''),
       phone: this._fb.nonNullable.control('', { validators: [Validators.required] }),
       address: this._fb.nonNullable.control('', { validators: [Validators.required] }),
       notes: this._fb.nonNullable.control(''),
@@ -56,13 +64,8 @@ export class NewClientComponent implements OnInit {
           tap((clientCreated) => console.log('Cliente Creado', clientCreated)),
         )
         .subscribe()
-        .add(() => this.go(`${ROUTES_API.DASHBOARD}`));
+        .add(() => this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD));
     }
     // Pendiente mensajes/validaciones campos para cuando este incorrecto
-  }
-
-  // Navegación
-  go(path: string): void {
-    this.router.navigate([path]);
   }
 }

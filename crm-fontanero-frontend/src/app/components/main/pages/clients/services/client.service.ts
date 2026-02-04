@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Client } from '../models/client';
+import { Client, NewClient } from '../models/client';
 import { BaseApiService } from '../../../../../services/base-api.service';
 
 @Injectable({
@@ -20,15 +20,15 @@ export class ClientService extends BaseApiService {
     return this.getOne<Client>(id);
   }
 
-  createClient(data: Partial<Client>): Observable<Client> {
-    return this.post<Client>(data);
+  createClient(data: Partial<NewClient>): Observable<NewClient> {
+    return this.post<NewClient>(data);
   }
 
   updateClient(id: string, data: Partial<Client>): Observable<Client> {
     return this.put<Client>(id, data);
   }
 
-  deleteClient(id: string): Observable<any> {
+  deleteClient(id: string): Observable<Client> {
     return this.delete(id);
   }
 }
