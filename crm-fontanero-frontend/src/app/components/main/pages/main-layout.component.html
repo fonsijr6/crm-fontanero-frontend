@@ -1,10 +1,17 @@
 <mat-sidenav-container class="shell">
   <!-- Sidebar persistente en todas las páginas -->
-  <app-sidebar></app-sidebar>
+   <mat-sidenav
+    #sidenav
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="!isHandset()"
+    class="sidebar"
+  >
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+  
   <!-- Contenido principal -->
   <mat-sidenav-content class="content">
     <!-- Toolbar fija -->
-
     <app-toolbar
       [theme]="theme"
       [toggleTheme]="toggleTheme"

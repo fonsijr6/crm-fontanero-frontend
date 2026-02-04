@@ -14,11 +14,6 @@ import { MatListModule } from '@angular/material/list';
   imports: [CommonModule, RouterLink, LayoutModule, MatSidenavModule, MatIconModule, MatListModule],
 })
 export class SidebarComponent {
-  breakpointObserver = inject(BreakpointObserver);
-
-  isHandset() {
-    return this.breakpointObserver.isMatched(Breakpoints.Handset);
-  }
 
   /**
    * vuelta al login

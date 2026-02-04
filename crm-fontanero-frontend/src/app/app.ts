@@ -6,7 +6,7 @@ import { MainLayoutComponent } from './components/main/pages/main-layout.compone
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MainLayoutComponent, AppRouter],
+  imports: [AppRouter],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

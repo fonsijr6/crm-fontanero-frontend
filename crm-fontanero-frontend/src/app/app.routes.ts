@@ -1,8 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './components/main/pages/main-layout.component';
+import { clientsResolver } from './resolvers/clients/client.resolver';
+import { stockResolver } from './resolvers/stock/stock.resolver';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/auth/pages/login.component').then(
+        (m) => m.LoginComponent
+      ),
+  },
   {
     path: '',
     component: MainLayoutComponent,
@@ -24,6 +38,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
+            resolve: clientsResolver,
             loadComponent: () =>
               import('./components/main/pages/clients/pages/client.component').then(
                 (m) => m.ClientComponent,
@@ -58,6 +73,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
+            resolve: stockResolver,
             loadComponent: () =>
               import('./components/main/pages/stock/pages/stock.component').then(
                 (m) => m.StockComponent,

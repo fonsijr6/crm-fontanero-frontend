@@ -1,0 +1,16 @@
+/* ===== Shell general ===== */
+.shell {
+  height: 100dvh;
+  background: color-mix(in oklab, var(--bg, #f7fbff) 92%, #ffffff 8%);
+}
+
+.sidebar {
+  width: 260px; /* ancho fijo y cómodo en desktop */
+  max-width: 85vw;
+  background: linear-gradient(180deg, #84abddb6 0%, #3054a1 100%);
+  color: #e8f0fe;
+  padding: 8px 8px 16px;
+}
+
+
+

@@ -1,9 +1,4 @@
-<mat-sidenav
-  #sidenav
-  [mode]="isHandset() ? 'over' : 'side'"
-  [opened]="!isHandset()"
-  class="sidebar"
->
+<section>
   <div class="brand">
     <div class="logo">
       <mat-icon>construction</mat-icon>
@@ -36,10 +31,18 @@
     </a>
   </mat-nav-list>
 
+  
   <div class="sidebar-bottom">
-    <button mat-button color="warn" (click)="logOut()" class="logout">
+    <button 
+      mat-button 
+      color="primary" 
+      (click)="logOut()" 
+      class="logout-btn"
+    >
       <mat-icon>power_settings_new</mat-icon>
-      Logout
+      <span>Logout</span>
     </button>
   </div>
-</mat-sidenav>
+
+</section>
+  
