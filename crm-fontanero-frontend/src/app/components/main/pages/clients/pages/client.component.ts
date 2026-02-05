@@ -15,7 +15,11 @@ import { FormsModule } from '@angular/forms';
 import { MainLayoutService } from '../../../services/main-layout.service';
 import { ROUTES_API } from '../../../../../constants/routes/routes.const';
 import { ClientService } from '../services/client.service';
-import { take, tap } from 'rxjs';
+import { catchError, finalize, of, switchMap, take, tap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDeleteDialogComponent } from './confirm-delete/confirm-delete-dialog.component';
+import { FeedbackService } from '../../../services/feedback.service';
+import { LoadingService } from '../../../../../core';
 
 @Component({
   selector: 'app-clients',
@@ -40,6 +44,9 @@ export class ClientComponent implements OnInit {
   private readonly mainLayoutService = inject(MainLayoutService);
   private readonly clientService = inject(ClientService);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
+  private readonly feedbackService = inject(FeedbackService);
+  private readonly loadingService = inject(LoadingService);
 
   // Cargo previamente los clients antes de pintar el componente
   clients: Client[] = this.activatedRoute.snapshot.data['clients'] ?? [];
@@ -52,6 +59,9 @@ export class ClientComponent implements OnInit {
   loading = false;
 
   ngOnInit(): void {
+    this.loadingService.show();
+    setTimeout(() => this.loadingService.hide(), 2000);
+
     this.mapFiltered();
     this.applyFilter();
   }
@@ -155,24 +165,40 @@ export class ClientComponent implements OnInit {
 
   // A editar cliente
   onEdit(cc: ClientCardVm) {
-    this.mainLayoutService.navigateTo(`${ROUTES_API.EDIT_CLIENT}/`, cc._id);
+    this.mainLayoutService.navigateTo(`${ROUTES_API.EDIT_CLIENT}/${cc._id}`);
   }
 
   // Eliminar cliente
   onDelete(cc: ClientCardVm) {
-    // Dialog para preguntar si esta seguro de eliminarlo
-    this.clientService
-      .deleteClient(cc._id)
+    this.dialog
+      .open(ConfirmDeleteDialogComponent, { data: { name: cc.name } })
+      .afterClosed()
       .pipe(
         take(1),
-        tap((clientRemoved) => this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD)),
+        switchMap((confirmed) =>
+          confirmed
+            ? (this.loadingService.show(), this.clientService.deleteClient(cc._id))
+            : of(null),
+        ),
+        switchMap((result) => (result ? this.clientService.getClients() : of(null))),
+        tap((clients) => {
+          if (!clients) return;
+          this.clients = clients;
+          this.mapFiltered();
+          this.applyFilter();
+          this.feedbackService.success('Cliente eliminado con éxito ✔');
+        }),
+        catchError(() => {
+          this.feedbackService.error('Error al eliminar el cliente ❌');
+          return of(null);
+        }),
+        finalize(() => this.loadingService.hide()),
       )
       .subscribe();
-    // Es una prueba, lo que hare de verdad será recargar la lista de clientes con spinner y mostrar mensaje satisfactorio o erroneo
   }
 
   // A visualizar perfil cliente
-  onView() {
-    this.mainLayoutService.navigateTo(ROUTES_API.VIEW_CLIENT);
+  onView(cc: ClientCardVm) {
+    this.mainLayoutService.navigateTo(`${ROUTES_API.VIEW_CLIENT}/${cc._id}`);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, PLATFORM_ID, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 
 // Angular Material
@@ -16,6 +16,11 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { SafeStorage } from '../../../../core/safe-storage-service';
 import moment from 'moment';
 import { ROUTES_API } from '../../../../constants/routes/routes.const';
+import { Client, LatestClient } from '../clients/models/client';
+import { ClientMapper } from '../clients/mapper/client-mapper';
+import { MomentPipe } from '../../../../pipes/moment.pipe';
+import { MainLayoutService } from '../../services/main-layout.service';
+import { StockItem } from '../stock/models/stock.models';
 
 type Theme = 'light' | 'dark';
 // Se eliminará
@@ -42,14 +47,17 @@ interface ClientRow {
     MatDividerModule,
     MatTooltipModule,
     MatBadgeModule,
+    MomentPipe,
   ],
 })
 export class DashboardComponent implements OnInit {
-  private router = inject(Router);
-  private platformId = inject(PLATFORM_ID);
-  private doc = inject(DOCUMENT);
-  private storage = inject(SafeStorage);
-  private breakpoint = inject(BreakpointObserver);
+  private readonly router = inject(Router);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly doc = inject(DOCUMENT);
+  private readonly storage = inject(SafeStorage);
+  private readonly breakpoint = inject(BreakpointObserver);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly mainLayoutService = inject(MainLayoutService);
 
   // Estado responsivo
   isHandset = signal(false);
@@ -58,18 +66,17 @@ export class DashboardComponent implements OnInit {
   theme = signal<Theme>('light');
 
   // KPIs (conecta a tu backend cuando quieras)
-  totalClients = signal<number>(120);
-  totalStock = signal<number>(35);
+  totalClients = signal<number>(0);
+  totalStock = signal<number>(0);
+
+  // Cargo previamente los clients para los ultimos clientes
+  clients: Client[] = this.activatedRoute.snapshot.data['clients'] ?? [];
+  stock: StockItem[] = this.activatedRoute.snapshot.data['stock'] ?? [];
 
   // Tabla últimos clientes
-  displayedColumns = ['name', 'phone', 'address', 'actions'];
+  displayedColumns = ['name', 'phone', 'address', 'creationDate'];
   // Esto realmente serán los ultimos 4 clientes creados con fecha mas reciente
-  latestClients: ClientRow[] = [
-    { name: 'María García', phone: '(123) 456-780', address: 'C/ Llecacea, 8' },
-    { name: 'Juan Pérez', phone: '600 123 456', address: 'Av. La Laguna 205, 06001' },
-    { name: 'Ana López', phone: '722 987 321', address: 'C/ Valleparanga 15A, 04600' },
-    { name: 'David Rodríguez', phone: '654 321 987', address: 'C/ Beillecía, 63-123-45' },
-  ];
+  latestClients: LatestClient[] = [];
 
   today = moment();
   protected routes = ROUTES_API;
@@ -101,12 +108,35 @@ export class DashboardComponent implements OnInit {
   current = 0;
 
   ngOnInit(): void {
-    // Modo responsive
+    this.responsiveMode();
+    this.loadStaticTheme();
+    this.setLatestClients();
+    this.updateNumberClientsAndStock();
+  }
+
+  // Actualizar nº stock y clientes
+  updateNumberClientsAndStock(): void {
+    this.totalClients.set(this.clients.length);
+    this.totalStock.set(this.stock.length);
+  }
+
+  // Rellenar ultimos clientes
+  setLatestClients(): void {
+    this.latestClients = this.clients
+      .map(ClientMapper.toLatestClient)
+      .sort((a, b) => b.createdAt!.valueOf() - a.createdAt!.valueOf())
+      .slice(0, 5);
+  }
+
+  // Modo responsive
+  responsiveMode(): void {
     this.breakpoint
       .observe('(max-width: 960px)')
       .subscribe((res) => this.isHandset.set(res.matches));
+  }
 
-    // Cargar tema persistido (SSR‑safe)
+  // Cargar tema persistido (SSR‑safe)
+  loadStaticTheme(): void {
     if (isPlatformBrowser(this.platformId)) {
       const saved = (this.storage.getItem('theme') as Theme | null) ?? 'light';
       this.theme.set(saved);
@@ -114,6 +144,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // Cambiar entre tema oscuro y claro
   toggleTheme(): void {
     const next: Theme = this.theme() === 'light' ? 'dark' : 'light';
     this.theme.set(next);
@@ -123,19 +154,15 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  /**
-   *
-   * @param t
-   * @returns
-   */
+  // Aplicar tema
   private applyTheme(t: Theme): void {
     if (!isPlatformBrowser(this.platformId)) return;
     this.doc.documentElement.setAttribute('data-theme', t);
   }
 
   // Navegación
-  go(path: string): void {
-    this.router.navigate([path]);
+  go(path: string, extras?: any): void {
+    this.mainLayoutService.navigateTo(path);
   }
 
   onViewClient(row: any): void {

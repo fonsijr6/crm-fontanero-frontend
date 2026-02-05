@@ -26,6 +26,7 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
+        resolve: { clients: clientsResolver, stock: stockResolver },
         loadComponent: () =>
           import('./components/main/pages/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent,
@@ -50,20 +51,20 @@ export const routes: Routes = [
                 (m) => m.NewClientComponent,
               ),
           },
-          // {
-          //   path: 'edit/:id',
-          //   loadComponent: () =>
-          //     import('./components/main/pages/clients/pages/new-client/edit-client.component').then(
-          //       (m) => m.EditClientComponent,
-          //     ),
-          // },
-          // {
-          //   path: 'view/:id',
-          //   loadComponent: () =>
-          //     import('./components/main/pages/clients/pages/new-client/detail-client.component').then(
-          //       (m) => m.DetailClientComponent,
-          //     ),
-          // },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./components/main/pages/clients/pages/edit-client/edit-client.component').then(
+                (m) => m.EditClientComponent,
+              ),
+          },
+          {
+            path: 'detail/:id',
+            loadComponent: () =>
+              import('./components/main/pages/clients/pages/detail-client/detail-client.component').then(
+                (m) => m.DetailClientComponent,
+              ),
+          },
         ],
       },
       // STOCK
@@ -93,7 +94,7 @@ export const routes: Routes = [
           //     ),
           // },
           // {
-          //   path: ':id',
+          //   path: 'detail/:id',
           //   loadComponent: () =>
           //     import('./components/main/pages/stock-item-detail.component').then(
           //       (m) => m.StockItemComponent,

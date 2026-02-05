@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { ROUTES_API } from '../../../../../../constants/routes/routes.const';
 import { MainLayoutService } from '../../../../services/main-layout.service';
+import { FeedbackService } from '../../../../services/feedback.service';
 
 @Component({
   selector: 'app-new-clients',
@@ -27,8 +28,9 @@ import { MainLayoutService } from '../../../../services/main-layout.service';
   ],
 })
 export class NewClientComponent implements OnInit {
-  private clientService = inject(ClientService);
-  private mainLayoutService = inject(MainLayoutService);
+  private readonly clientService = inject(ClientService);
+  private readonly mainLayoutService = inject(MainLayoutService);
+  private readonly feedbackService = inject(FeedbackService);
   private readonly _fb = inject(FormBuilder);
 
   loading = false;
@@ -61,7 +63,7 @@ export class NewClientComponent implements OnInit {
         .createClient(this.clientForm.getRawValue())
         .pipe(
           take(1),
-          tap((clientCreated) => console.log('Cliente Creado', clientCreated)),
+          tap((clientCreated) => this.feedbackService.success('Cliente creado correctamente')),
         )
         .subscribe()
         .add(() => this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD));

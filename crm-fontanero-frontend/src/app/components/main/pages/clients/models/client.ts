@@ -6,10 +6,11 @@ export interface Client {
   phone: string;
   address: string;
   notes?: string;
+  createdAt?: moment.Moment;
 }
 
 // DTO de creación: lo que espera el backend en POST
-export type NewClient = Omit<Client, '_id'>;
+export type NewClient = Omit<Client, '_id' | 'createdAt'>;
 
 // ViewModel para las cards
 export type ClientCardVm = Pick<Client, '_id' | 'phone' | 'address'> & {
@@ -17,3 +18,6 @@ export type ClientCardVm = Pick<Client, '_id' | 'phone' | 'address'> & {
   notes: string; // forzamos string para evitar 'undefined' en vista
   avatarUrl?: string; // opcional
 };
+
+// Información últimos clientes
+export type LatestClient = Pick<Client, '_id' | 'name' | 'address' | 'phone' | 'createdAt'>;

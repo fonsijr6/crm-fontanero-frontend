@@ -15,7 +15,7 @@
       <div class="kpi-value">{{ totalClients() }}</div>
 
       <div class="kpi-actions">
-        <button mat-stroked-button color="primary" (click)="go('/clients')">
+        <button mat-stroked-button color="primary" (click)="go(`${routes.CLIENTS}`)">
           <mat-icon class="material-symbols-rounded">people</mat-icon>
           Ver clientes
         </button>
@@ -120,6 +120,12 @@
       <ng-container matColumnDef="address">
         <th mat-header-cell *matHeaderCellDef>Dirección</th>
         <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+      </ng-container>
+
+      <!-- Fecha de alta -->
+      <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef>Fecha de alta</th>
+        <td mat-cell *matCellDef="let row">{{ row.createdAt | moment: 'DD/MM/YYYY' }}</td>
       </ng-container>
 
       <!-- Acciones: Botón "Ver" -->
