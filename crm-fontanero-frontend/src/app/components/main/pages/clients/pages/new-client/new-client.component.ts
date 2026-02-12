@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { take, tap } from 'rxjs';
+import { catchError, of, take, tap } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from '../../services/client.service';
 import { ModelFormGroup } from '../../../../../../models/model-form-group.models';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ROUTES_API } from '../../../../../../constants/routes/routes.const';
 import { MainLayoutService } from '../../../../services/main-layout.service';
 import { FeedbackService } from '../../../../services/feedback.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-clients',
@@ -54,20 +55,83 @@ export class NewClientComponent implements OnInit {
     });
   }
 
+  // Limpiar formulario
+  clearForm(): void {
+    this.clientForm.reset({
+      name: '',
+      surname1: '',
+      surname2: '',
+      address: '',
+      notes: '',
+      phone: '',
+    });
+  }
+
   /**
    * Creo el cliente y lo guardo en bbdd
    */
   addClient(): void {
-    if (this.clientForm.valid) {
-      this.clientService
-        .createClient(this.clientForm.getRawValue())
-        .pipe(
-          take(1),
-          tap((clientCreated) => this.feedbackService.success('Cliente creado correctamente')),
-        )
-        .subscribe()
-        .add(() => this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD));
+    if (!this.clientForm.valid) {
+      this.clientForm.markAllAsTouched();
+      Swal.fire({
+        title: '¡Ojo!',
+        text: 'Faltan campos por completar',
+        icon: 'warning',
+        iconColor: '#dae63c',
+        timer: 3000,
+        showConfirmButton: false,
+        background: '#ffffff',
+        color: '#1f2937',
+        width: '420px',
+        padding: '1.4rem',
+        backdrop: `rgba(0, 0, 0, 0.15)`,
+      });
+      return;
     }
-    // Pendiente mensajes/validaciones campos para cuando este incorrecto
+
+    this.postClient();
+    // Pendiente validaciones campos para cuando este incorrecto
+  }
+
+  // Posteo el cliente
+  postClient(): void {
+    this.clientService
+      .createClient(this.clientForm.getRawValue())
+      .pipe(
+        take(1),
+        tap((clientCreated) => {
+          Swal.fire({
+            title: '¡Operación exitosa!',
+            text: `Se ha agregado a ${clientCreated.name} ${clientCreated.surname1} ${clientCreated.surname2 ?? ''} correctamente`,
+            icon: 'success',
+            iconColor: '#22c55e',
+            timer: 3000,
+            showConfirmButton: false,
+            background: '#ffffff',
+            color: '#1f2937',
+            width: '420px',
+            padding: '1.4rem',
+            backdrop: `rgba(0, 0, 0, 0.15)`,
+          });
+          this.clearForm(); // Limpiamos el formulario
+        }),
+        catchError(() => {
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo agregar el cliente.',
+            icon: 'error',
+            iconColor: '#dc2626',
+            background: '#fee2e2',
+            color: '#7f1d1d',
+            confirmButtonColor: '#dc2626',
+            confirmButtonText: 'Entendido',
+            width: '420px',
+            padding: '1.4rem',
+            backdrop: `rgba(0, 0, 0, 0.25)`,
+          });
+          return of(undefined);
+        }),
+      )
+      .subscribe();
   }
 }

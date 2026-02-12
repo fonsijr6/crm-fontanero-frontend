@@ -24,28 +24,29 @@
 
   <mat-divider></mat-divider>
 
-  <!-- Virtual scroll para rendimiento -->
-  <cdk-virtual-scroll-viewport itemSize="104" class="viewport">
-    @for (c of filtered; track $index) {
+  <div class="lista-clientes">
+    @for (c of filtered; track c._id) {
       <div class="fila">
         <mat-card class="card" appearance="outlined">
-          <!-- AVATAR con iniciales -->
+          <!-- AVATAR -->
           <div class="avatar" [style.--bg]="getAvatarBg(c.name)" [style.--fg]="getAvatarFg(c.name)">
-            <span class="initials" aria-hidden="true">{{ getInitials(c.name) }}</span>
-            <span class="sr-only">Cliente: {{ c.name }}</span>
+            <span class="initials">{{ getInitials(c.name) }}</span>
           </div>
 
           <!-- INFO -->
           <div class="info">
             <div class="nombre">{{ c.name }}</div>
+
             <div class="telefono">
               <mat-icon class="icon-inline">call</mat-icon>
               <a [href]="'tel:' + c.phone">{{ c.phone }}</a>
             </div>
+
             <div class="direccion">
               <mat-icon class="icon-inline">place</mat-icon>
               <span class="truncate">{{ c.address }}</span>
             </div>
+
             @if (c.notes) {
               <div class="nota">
                 <mat-icon class="icon-inline">sticky_note_2</mat-icon>
@@ -53,6 +54,7 @@
               </div>
             }
           </div>
+
           <!-- ACCIONES -->
           <div class="acciones">
             <button mat-icon-button color="primary" (click)="onEdit(c)">
@@ -61,12 +63,15 @@
             <button mat-icon-button color="warn" (click)="onDelete(c)">
               <mat-icon>delete</mat-icon>
             </button>
-            <button mat-icon-button (click)="onView(c)"><mat-icon>visibility</mat-icon></button>
+            <button mat-icon-button (click)="onView(c)">
+              <mat-icon>visibility</mat-icon>
+            </button>
           </div>
         </mat-card>
       </div>
     }
-  </cdk-virtual-scroll-viewport>
+  </div>
+
   @if (filtered.length === 0) {
     <div class="vacio">
       <mat-icon>inbox</mat-icon>

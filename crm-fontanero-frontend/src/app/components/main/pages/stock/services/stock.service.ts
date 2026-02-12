@@ -24,7 +24,7 @@ export class StockService extends BaseApiService {
   updateItem(id: string, data: any): Observable<StockItem> {
     return this.put<StockItem>(id, data);
   }
-  deleteItem(id: string): Observable<StockItem> {
-    return this.delete<StockItem>(id);
+  deleteItem(id: string): Observable<void> {
+    return this.delete<void>(id);
   }
 }

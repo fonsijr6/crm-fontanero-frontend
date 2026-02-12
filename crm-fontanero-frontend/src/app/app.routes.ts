@@ -38,7 +38,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            resolve: { clients: clientsResolver },
+            // resolve: { clients: clientsResolver },
             loadComponent: () =>
               import('./components/main/pages/clients/pages/client.component').then(
                 (m) => m.ClientComponent,
@@ -79,20 +79,20 @@ export const routes: Routes = [
                 (m) => m.StockComponent,
               ),
           },
-          // {
-          //   path: 'new',
-          //   loadComponent: () =>
-          //     import('./components/main/pages/new-stock-item.component').then(
-          //       (m) => m.NewStockComponent,
-          //     ),
-          // },
-          // {
-          //   path: 'edit',
-          //   loadComponent: () =>
-          //     import('./components/main/pages/edit-stock-item.component').then(
-          //       (m) => m.NewStockComponent,
-          //     ),
-          // },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./components/main/pages/stock/pages/new-stock-item/new-stock-item.component').then(
+                (m) => m.NewStockItemComponent,
+              ),
+          },
+          {
+            path: 'edit',
+            loadComponent: () =>
+              import('./components/main/pages/stock/pages/edit-stock-item/edit-stock-item.component').then(
+                (m) => m.EditStockItemComponent,
+              ),
+          },
           // {
           //   path: 'detail/:id',
           //   loadComponent: () =>

@@ -28,7 +28,7 @@ export class ClientService extends BaseApiService {
     return this.put<Client>(id, data);
   }
 
-  deleteClient(id: string): Observable<Client> {
+  deleteClient(id: string): Observable<void> {
     return this.delete(id);
   }
 }
