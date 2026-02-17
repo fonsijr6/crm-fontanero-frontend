@@ -10,6 +10,9 @@ import { take, tap } from 'rxjs';
 import { ROUTES_API } from '../../../../../../constants/routes/routes.const';
 import { MainLayoutService } from '../../../../services/main-layout.service';
 import { ModelFormGroup } from '../../../../../../models/model-form-group.models';
+import { MatIconModule } from '@angular/material/icon';
+import { LoadingService } from '../../../../../../core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-client',
@@ -21,6 +24,7 @@ import { ModelFormGroup } from '../../../../../../models/model-form-group.models
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './edit-client.component.html',
   styleUrls: ['./edit-client.component.css'],
@@ -30,8 +34,10 @@ export class EditClientComponent implements OnInit {
   private readonly _fb = inject(FormBuilder);
   private readonly clientService = inject(ClientService);
   private readonly mainLayoutService = inject(MainLayoutService);
+  private readonly loadingService = inject(LoadingService);
 
   clientId!: string;
+  loading = false;
 
   editForm: FormGroup<ModelFormGroup<NewClient>> = this.createForm();
 
@@ -83,14 +89,43 @@ export class EditClientComponent implements OnInit {
 
   update(): void {
     if (this.editForm.invalid) return;
+    this.loading = true;
+    this.loadingService.show();
+    const clientModificated: NewClient = this.editForm.getRawValue();
+    this.putClient(clientModificated);
+  }
 
+  putClient(client: NewClient): void {
     this.clientService
-      .updateClient(this.clientId, this.editForm.getRawValue())
+      .updateClient(this.clientId, client)
       .pipe(
         take(1),
-        tap(() => this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD)),
+        tap(() => {
+          Swal.fire({
+            title: '¡Operación exitosa!',
+            text: `Se ha actualizado el cliente correctamente`,
+            icon: 'success',
+            iconColor: '#22c55e',
+            timer: 3000,
+            showConfirmButton: false,
+            background: '#ffffff',
+            color: '#1f2937',
+            width: '420px',
+            padding: '1.4rem',
+            backdrop: `rgba(0, 0, 0, 0.15)`,
+          });
+          this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD);
+        }),
       )
-      .subscribe();
+      .subscribe()
+      .add(() => {
+        this.loading = false;
+        this.loadingService.hide();
+      });
+  }
+
+  // Volver pantalla anterior
+  goBack(): void {
+    this.mainLayoutService.onBack();
   }
 }
-``;

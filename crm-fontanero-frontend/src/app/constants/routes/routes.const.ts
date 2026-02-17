@@ -11,7 +11,7 @@ export const ROUTES_API = {
   //STOCK
   STOCK: '/stock',
   NEW_ITEM: '/stock/new',
-  EDIT_ITEM: '/stock/new',
+  EDIT_ITEM: '/stock/edit',
   VIEW_ITEM: '/stock/view',
   //AGENDA
   AGEND: '/agend',

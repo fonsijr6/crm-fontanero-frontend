@@ -41,7 +41,6 @@ export class ClientComponent implements OnInit {
   private readonly mainLayoutService = inject(MainLayoutService);
   private readonly clientService = inject(ClientService);
   private readonly dialog = inject(MatDialog);
-  private readonly feedbackService = inject(FeedbackService);
   private readonly loadingService = inject(LoadingService);
 
   // Listas
@@ -65,9 +64,6 @@ export class ClientComponent implements OnInit {
       .pipe(
         take(1),
         tap((clients) => {
-          console.log('CLIENTES RECARGADOS:', clients);
-          console.log('FILTERED ANTES:', this.filtered);
-
           this.clients = [...clients];
           this.mapFiltered();
           this.applyFilter();
@@ -98,8 +94,6 @@ export class ClientComponent implements OnInit {
         this.normalize(vm.address).includes(toCompare) ||
         this.normalize(vm.notes).includes(toCompare),
     );
-
-    console.log('FILTERED DESPUÉS DEL FILTRO:', this.filtered);
   }
 
   clearFilter(): void {

@@ -34,8 +34,30 @@
       <textarea matInput formControlName="notes" rows="3"></textarea>
     </mat-form-field>
 
+    <!-- Botonera -->
     <div class="btn-wrapper">
-      <button mat-flat-button type="submit" color="primary" class="submit-btn">Añadir</button>
+      <!-- Botón Volver (secundario) -->
+      <button
+        type="button"
+        class="btn-ghost"
+        mat-stroked-button
+        (click)="goBack()"
+        aria-label="Volver a la pantalla anterior"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </button>
+
+      <!-- Botón Añadir (principal) -->
+      <button
+        mat-flat-button
+        type="submit"
+        color="primary"
+        class="submit-btn"
+        [disabled]="clientForm.invalid || loading"
+      >
+        Añadir
+      </button>
     </div>
   </form>
 </section>

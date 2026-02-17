@@ -1,0 +1,113 @@
+.stock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 50px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+
+  .titulo {
+    margin: 0;
+    font-weight: 800;
+    font-size: 2rem;
+  }
+  .subtitulo {
+    margin: 5px 2px;
+    color: rgba(0,0,0,.55);
+  }
+  .buscador {
+    width: min(420px, 100%);
+  }
+}
+
+/* LISTA */
+.fila { padding: 6px 0; }
+
+.card {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+
+  padding: 18px 22px;
+  background: #eef4ff;
+  border: 1px solid #d9e4ff;
+  border-radius: 16px;
+}
+
+/* AVATAR */
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--fg);
+  font-weight: 800;
+  user-select: none;
+}
+
+/* INFO */
+.info {
+  display: grid;
+  gap: 6px;
+
+  .nombre {
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+  .tipo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(0,0,0,.6);
+  }
+  .icon-inline { color: rgba(0,0,0,.54); }
+}
+
+/* STOCK BLOCK */
+.stock-block {
+  display: grid;
+  gap: 6px;
+  min-width: 120px;
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .label {
+      color: rgba(0,0,0,.6);
+    }
+    .qty {
+      font-weight: 700;
+    }
+  }
+
+  .total {
+    margin-top: 6px;
+    font-weight: 800;
+  }
+}
+
+/* ACCIONES */
+.acciones {
+  display: flex;
+  gap: 10px;
+}
+
+/* VACÍO */
+.vacio {
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  padding: 40px 0;
+  color: rgba(0,0,0,.6);
+}

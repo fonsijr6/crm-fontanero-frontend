@@ -1,4 +1,4 @@
-<section class="add-stock-container">
+<section class="edit-stock-container">
   <h1>Editar material</h1>
 
   <form [formGroup]="editStockForm" (ngSubmit)="update()" novalidate>
@@ -12,8 +12,8 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tipo de material</mat-label>
       <mat-select formControlName="typeMaterial" required>
-        @for (t of materialTypes; track t.value) {
-          <mat-option [value]="t.value">
+        @for (t of materialTypes; track t.label) {
+          <mat-option [value]="t.label">
             {{ t.label }}
           </mat-option>
         }
@@ -70,7 +70,7 @@
         class="submit-btn"
         [disabled]="editStockForm.invalid || loading"
       >
-        Añadir
+        Actualizar
       </button>
     </div>
   </form>

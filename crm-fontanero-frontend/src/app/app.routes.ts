@@ -38,7 +38,6 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            // resolve: { clients: clientsResolver },
             loadComponent: () =>
               import('./components/main/pages/clients/pages/client.component').then(
                 (m) => m.ClientComponent,
@@ -73,7 +72,6 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            resolve: { stock: stockResolver },
             loadComponent: () =>
               import('./components/main/pages/stock/pages/stock.component').then(
                 (m) => m.StockComponent,
@@ -87,7 +85,7 @@ export const routes: Routes = [
               ),
           },
           {
-            path: 'edit',
+            path: 'edit/:id',
             loadComponent: () =>
               import('./components/main/pages/stock/pages/edit-stock-item/edit-stock-item.component').then(
                 (m) => m.EditStockItemComponent,

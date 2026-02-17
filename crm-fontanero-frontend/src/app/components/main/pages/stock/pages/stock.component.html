@@ -1,26 +1,129 @@
-<h2>Stock</h2>
-@if (stock.length > 0) {
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Material</th>
-        <th>Uni. Almacén</th>
-        <th>Uni. Furgoneta</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of stock; track $index) {
-        <tr>
-          <td>{{ item.name }}</td>
-          <td>{{ item.typeMaterial }}</td>
-          <td>{{ item.warehouseUnits }}</td>
-          <td>{{ item.vanUnits }}</td>
-        </tr>
+<section class="stock">
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <h1 class="titulo">Stock</h1>
+      <p class="subtitulo">Tus materiales, Alfonso</p>
+    </div>
+
+    <!-- Buscador -->
+    <mat-form-field appearance="outline" class="buscador">
+      <mat-label>Buscar</mat-label>
+      <input
+        matInput
+        placeholder="Nombre o tipo de material"
+        [(ngModel)]="filterText"
+        (ngModelChange)="applyFilter()"
+      />
+      @if (filterText) {
+        <button matSuffix mat-icon-button (click)="clearFilter()">
+          <mat-icon>close</mat-icon>
+        </button>
       }
-    </tbody>
-  </table>
-} @else {
-  <p>No hay stock todavía.</p>
-}
-<button (click)="reload()">Recargar</button>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </header>
+
+  <mat-divider></mat-divider>
+
+  <!-- LISTA -->
+  <div class="lista-stock">
+    @for (item of filtered; track item._id) {
+      <div class="fila">
+        <mat-card class="card" appearance="outlined">
+
+          <!-- AVATAR -->
+          <div class="avatar"
+               [style.--bg]="getAvatarBg(item.name)"
+               [style.--fg]="getAvatarFg(item.name)">
+            <span class="initials">{{ getInitials(item.name) }}</span>
+          </div>
+
+          <!-- INFO -->
+          <div class="info">
+            <div class="nombre">{{ item.name }}</div>
+            <div class="tipo">
+              <mat-icon class="icon-inline">category</mat-icon>
+              <span>{{ item.typeMaterial }}</span>
+            </div>
+          </div>
+
+          <!-- BLOQUE STOCK -->
+          <div class="stock-block">
+            <div class="row">
+              <mat-icon class="icon-inline">warehouse</mat-icon>
+              <span class="label">Almacén:</span>
+              <span class="qty">{{ item.warehouseUnits ?? 0 }}</span>
+            </div>
+
+            <div class="row">
+              <mat-icon class="icon-inline">local_shipping</mat-icon>
+              <span class="label">Furgo:</span>
+              <span class="qty">{{ item.vanUnits ?? 0 }}</span>
+            </div>
+
+            <div class="total">
+              Total: {{ getTotal(item) }}
+            </div>
+          </div>
+
+          <!-- ACCIONES -->
+          <!-- ACCIONES -->
+<div class="acciones">
+
+  <!-- Separador vertical -->
+  <div class="separator"></div>
+
+  <!-- Acciones almacén -->
+  <div class="accion-grupo">
+    <span class="accion-label">Almacén</span>
+    <div class="accion-botones">
+      <button mat-icon-button (click)="onIncreaseWarehouse(item)">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onDecreaseWarehouse(item)"
+              [disabled]="(item.warehouseUnits || 0) <= 0">
+        <mat-icon>remove</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Acciones furgo -->
+  <div class="accion-grupo">
+    <span class="accion-label">Furgo</span>
+    <div class="accion-botones">
+      <button mat-icon-button (click)="onIncreaseVan(item)">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onDecreaseVan(item)"
+              [disabled]="(item.vanUnits || 0) <= 0">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Acciones generales -->
+  <button mat-icon-button color="primary" (click)="onEdit(item)">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" (click)="onUpdate(item)">
+    <mat-icon>refresh</mat-icon>
+  </button>
+  <button mat-icon-button color="warn" (click)="onDelete(item)">
+    <mat-icon>delete</mat-icon>
+  </button>
+
+</div>
+
+        </mat-card>
+      </div>
+    }
+  </div>
+
+  @if (filtered.length === 0) {
+    <div class="vacio">
+      <mat-icon>inventory_2</mat-icon>
+      <p>No hay materiales que coincidan con la búsqueda.</p>
+    </div>
+  }
+</section>

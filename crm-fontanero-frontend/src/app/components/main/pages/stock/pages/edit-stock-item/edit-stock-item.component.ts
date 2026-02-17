@@ -11,7 +11,7 @@ import { ModelFormGroup } from '../../../../../../models/model-form-group.models
 import { NewStockItem, StockItem } from '../../models/stock.models';
 import { StockService } from '../../services/stock.service';
 import { MaterialTypes } from '../../constans/stock-item.const';
-import { MatOption } from '@angular/material/select';
+import { MatOption, MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     MatFormField,
+    MatSelectModule,
     MatLabel,
     ReactiveFormsModule,
     MatInputModule,

@@ -13,6 +13,7 @@ import { ROUTES_API } from '../../../../../../constants/routes/routes.const';
 import { MainLayoutService } from '../../../../services/main-layout.service';
 import { FeedbackService } from '../../../../services/feedback.service';
 import Swal from 'sweetalert2';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-new-clients',
@@ -26,6 +27,7 @@ import Swal from 'sweetalert2';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule
   ],
 })
 export class NewClientComponent implements OnInit {
@@ -71,24 +73,6 @@ export class NewClientComponent implements OnInit {
    * Creo el cliente y lo guardo en bbdd
    */
   addClient(): void {
-    if (!this.clientForm.valid) {
-      this.clientForm.markAllAsTouched();
-      Swal.fire({
-        title: '¡Ojo!',
-        text: 'Faltan campos por completar',
-        icon: 'warning',
-        iconColor: '#dae63c',
-        timer: 3000,
-        showConfirmButton: false,
-        background: '#ffffff',
-        color: '#1f2937',
-        width: '420px',
-        padding: '1.4rem',
-        backdrop: `rgba(0, 0, 0, 0.15)`,
-      });
-      return;
-    }
-
     this.postClient();
     // Pendiente validaciones campos para cuando este incorrecto
   }
@@ -133,5 +117,10 @@ export class NewClientComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  // Volver pantalla anterior
+  goBack(): void {
+    this.mainLayoutService.onBack();
   }
 }
