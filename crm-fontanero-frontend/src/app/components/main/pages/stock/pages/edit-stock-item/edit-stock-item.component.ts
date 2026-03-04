@@ -104,7 +104,7 @@ export class EditStockItemComponent implements OnInit {
             text: `Material actualizado correctamente`,
             icon: 'success',
             iconColor: '#22c55e',
-            timer: 3000,
+            timer: 2000,
             showConfirmButton: false,
             background: '#ffffff',
             color: '#1f2937',
@@ -112,7 +112,7 @@ export class EditStockItemComponent implements OnInit {
             padding: '1.4rem',
             backdrop: `rgba(0, 0, 0, 0.15)`,
           });
-          this.mainLayoutService.navigateTo(ROUTES_API.DASHBOARD);
+          this.mainLayoutService.navigateTo(ROUTES_API.STOCK);
         }),
         catchError(() => {
           Swal.fire({

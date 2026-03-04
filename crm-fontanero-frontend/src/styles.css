@@ -29,3 +29,14 @@ body {
   background-color: #d32f2f !important;
   color: white !important;
 }
+
+/*MAT-DIALOG-CONTAINER*/
+.cliente-dialog .mat-dialog-container {
+  background: #ffffff;
+  border-radius: 24px !important;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.08),
+    0 4px 8px rgba(0,0,0,0.05);
+  padding: 0 !important;
+}
+

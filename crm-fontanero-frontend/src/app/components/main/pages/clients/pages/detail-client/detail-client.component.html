@@ -1,0 +1,27 @@
+<div class="detalle-card">
+  <button class="close" mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="avatar" [style.--bg]="getAvatarBg(data.name)" [style.--fg]="getAvatarFg(data.name)">
+    <span class="initials">{{ getInitials(data.name) }}</span>
+  </div>
+
+  <h2>{{ data.name }}</h2>
+  <p class="sub">Detalles del cliente</p>
+
+  <div class="info-item">
+    <mat-icon>call</mat-icon>
+    <span>{{ data.phone }}</span>
+  </div>
+
+  <div class="info-item">
+    <mat-icon>place</mat-icon>
+    <span>{{ data.address }}</span>
+  </div>
+
+  <div class="info-item" *ngIf="data.notes">
+    <mat-icon>sticky_note_2</mat-icon>
+    <span>{{ data.notes }}</span>
+  </div>
+</div>

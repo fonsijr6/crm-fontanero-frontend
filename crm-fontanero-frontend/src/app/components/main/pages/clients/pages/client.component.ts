@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MainLayoutService } from '../../../services/main-layout.service';
 import { ROUTES_API } from '../../../../../constants/routes/routes.const';
 import { ClientService } from '../services/client.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDeleteDialogComponent } from './confirm-delete/confirm-delete-dialog.component';
 import { FeedbackService } from '../../../services/feedback.service';
 import { LoadingService } from '../../../../../core';
@@ -19,6 +19,7 @@ import { catchError, finalize, of, switchMap, take, tap } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { ClientMapper } from '../mapper/client-mapper';
+import { DetailClientComponent } from './detail-client/detail-client.component';
 
 @Component({
   selector: 'app-clients',
@@ -35,6 +36,7 @@ import { ClientMapper } from '../mapper/client-mapper';
     MatInputModule,
     MatDividerModule,
     FormsModule,
+    MatDialogModule
   ],
 })
 export class ClientComponent implements OnInit {
@@ -163,7 +165,11 @@ export class ClientComponent implements OnInit {
   }
 
   onView(cc: ClientCardVm) {
-    this.mainLayoutService.navigateTo(`${ROUTES_API.VIEW_CLIENT}/${cc._id}`);
+    this.dialog.open(DetailClientComponent, {
+      data: { name: cc.name, phone: cc.phone, address: cc.address, notes: cc.notes },
+      width: '420px',
+      panelClass: 'cliente-dialog',
+    });
   }
 
   // Eliminar
